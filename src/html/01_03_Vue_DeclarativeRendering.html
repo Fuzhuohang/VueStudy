@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Vue.js2.0——声明式渲染</title>
+    <!-- 开发版本引入 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- 生产版本引入 -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script> -->
+</head>
+
+<body>
+    <div id="app-01">
+        <div id="app">
+            {{ message }}
+        </div>
+
+        <script>
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    message: 'Hello Vue!'
+                }
+            })
+        </script>
+    </div>
+    <div id="app-02">
+        <div id="app-2">
+            <span v-bind:title="message">
+                鼠标停留几秒钟查看此处动态绑定的提示信息！
+            </span>
+        </div>
+
+        <script>
+            var app2 = new Vue({
+                el: '#app-2',
+                data: {
+                    message: '页面加载于 ' + new Date().toLocaleString()
+                }
+            })
+        </script>
+    </div>
+</body>
+
+</html>

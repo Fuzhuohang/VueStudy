@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Vue.js2.0——条件与循环</title>
+    <!-- 开发版本引入 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- 生产版本引入 -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script> -->
+</head>
+
+<body>
+    <div id="app-03">
+        <div id="app-3">
+            <p v-if="seen">现在你可以看到我了</p>
+        </div>
+        <script>
+            var app3 = new Vue({
+                el: '#app-3',
+                data: {
+                    seen: true,
+                }
+            })
+        </script>
+    </div>
+    <div id="app-04">
+        <div id="app-4">
+            <ol>
+                <li v-for="todo in todos">
+                    {{ todo.text }}
+                </li>
+            </ol>
+        </div>
+        <script>
+            var app4 = new Vue({
+                el: '#app-4',
+                data: {
+                    todos: [{
+                        text: '学习 JavaScript'
+                    }, {
+                        text: '学习 Vue'
+                    }, {
+                        text: '整个牛项目'
+                    }]
+                }
+            })
+        </script>
+    </div>
+</body>
+
+</html>
