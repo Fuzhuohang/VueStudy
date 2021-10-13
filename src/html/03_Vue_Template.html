@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Vue.js2.0——模板语法</title>
+    <!-- 开发版本引入 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- 生产版本引入 -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script> -->
+</head>
+
+<body>
+    <div>
+        <h1>插值</h1>
+        <div>
+            <h2>文本</h2>
+            <div>
+                <div id="app-text-1">
+                    <p>Message: {{ msg }}</p>
+                    <button v-on:click="msg = 'Hello World!'">Hello World!</button>
+                </div>
+                <script>
+                    new Vue({
+                        el: '#app-text-1',
+                        data: {
+                            msg: 'Hello Vue!',
+                        }
+                    })
+                </script>
+            </div>
+            <div>
+                <div id="app-text-2">
+                    <p v-once>这个将不会发生变化: {{ msg }}</p>
+                    <button v-on:click="msg = 'Hello World!'">Hello World!</button>
+                </div>
+                <script>
+                    new Vue({
+                        el: '#app-text-2',
+                        data: {
+                            msg: 'Hello Vue!',
+                        }
+                    })
+                </script>
+            </div>
+        </div>
+        <div>
+            <h2>原始HTML</h2>
+            <div>
+                <div id="app-html-1">
+                    <p>Using mustaches: {{ rawHtml }}</p>
+                    <p>Using v-html directive: <span v-html="rawHtml"></span></p>
+                </div>
+                <script>
+                    new Vue({
+                        el: '#app-html-1',
+                        data: {
+                            rawHtml: '<span style="color:red">This should be red.</span>',
+                        }
+                    })
+                </script>
+            </div>
+        </div>
+        <div>
+            <h2>Attribute</h2>
+            <div>
+                <div id="app-attr-1">
+                    <div v-bind:id="dynamicId"></div>
+                    <button v-bind:disabled="isButtonDisabled" v-on:click="isButtonDisabled=!isButtonDisabled">Button</button>
+                </div>
+                <script>
+                    new Vue({
+                        el: '#app-attr-1',
+                        data: {
+                            dynamicId: 'Div_' + new Date().getTime(),
+                            isButtonDisabled: false,
+                        }
+                    })
+                </script>
+            </div>
+        </div>
+        <div>
+            <h2>使用 Javascript 表达式</h2>
+            <div>
+                <div id="app-javascript-1">
+                    <div>{{ number + 1 }}</div>
+                    <div>{{ ok ? 'YES' : 'NO' }}</div>
+                    <div>{{ message.split('').reverse().join('') }}</div>
+                    <div v-bind:id="'list-' + id"></div>
+                </div>
+                <script>
+                    new Vue({
+                        el: '#app-javascript-1',
+                        data: {
+                            number: 20,
+                            ok: true,
+                            message: "Hello World!!!",
+                            id: 'Div_' + new Date().getTime(),
+                        }
+                    })
+                </script>
+            </div>
+            <div>
+                <div id="app-javascript-2">
+                    <div>{{ var a = 1 }}</div>
+                    <div>{{ if(ok) { return message } }}</div>
+                </div>
+                <script>
+                    new Vue({
+                        el: '#app-javascript-2',
+                        data: {
+                            a: 20,
+                            ok: true,
+                            message: "Hello World!!!",
+                        }
+                    })
+                </script>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h1>指令</h1>
+        <div>
+            <h2>参数</h2>
+            <div>
+                <div id="app-parameter-1">
+                    <a v-bind:href="url">百度</a>
+                    <button v-on:click="url='https://www.qq.com'">弹窗</button>
+                    <button v-on:click="dosomething">弹窗</button>
+                    <button v-on:click="{{dosomething}}">弹窗</button>
+                </div>
+                <script>
+                    new Vue({
+                        el: '#app-parameter-1',
+                        data: {
+                            url: 'https://www.baidu.com',
+                            dosomething: url = 'https://www.qq.com',
+                        }
+                    })
+                </script>
+            </div>
+        </div>
+        <div>
+            <h2>动态参数</h2>
+            <div>
+                <div id="app-dynamic-1">
+                    <a v-bind:[attributename1]="url">百度</a>
+                    <button v-on:[eventname1]="url='https://www.qq.com'">弹窗</button>
+                    <button v-on:[eventname1]="doSomething">弹窗</button>
+                    <button v-on:[eventname1]="{{doSomething}}">弹窗</button>
+                </div>
+                <script>
+                    new Vue({
+                        el: '#app-dynamic-1',
+                        data: {
+                            url: 'https://www.baidu.com',
+                            attributename1: 'href',
+                            doSomething: url = 'https://www.qq.com',
+                            eventname1: 'click',
+                        }
+                    })
+                </script>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

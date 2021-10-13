@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Vue.js2.0——类绑定</title>
+    <!-- 开发版本引入 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- 生产版本引入 -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script> -->
+    <style>
+        .active {
+            width: 200px;
+            height: 150px;
+            margin: 5px;
+            border: 5px double blue;
+            background-color: gray;
+        }
+        
+        .text-danger {
+            width: 150px;
+            height: 200px;
+            margin: 5px;
+            border: 5px double red;
+            background-color: yellowgreen;
+        }
+        
+        .active1 {
+            width: 150px;
+            height: 200px;
+            margin: 5px;
+            border-top: 5px double blue;
+            border-bottom: 5px double blue;
+            background-color: gray;
+        }
+        
+        .text-danger1 {
+            width: 200px;
+            height: 150px;
+            margin: 5px;
+            border-right: 5px double red;
+            border-left: 5px double red;
+            background-color: yellowgreen;
+        }
+        
+        .foo {
+            border: 3px dashed blue;
+        }
+        
+        .bar {
+            background-color: gray;
+        }
+        
+        .baz {
+            font-size: 25px;
+            font-weight: bolder;
+        }
+        
+        .boo {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h1>对象语法</h1>
+        <div>
+            <div id="app_object_01" class="static" v-bind:class="{ active: isActive, 'text-danger': hasError }">
+                <button @click="change">class改变</button>
+            </div>
+
+            <script>
+                new Vue({
+                    el: "#app_object_01",
+                    data: {
+                        isActive: true,
+                        hasError: false,
+                    },
+                    methods: {
+                        change: function() {
+                            this.isActive = !this.isActive;
+                            this.hasError = !this.hasError;
+                        }
+                    }
+                })
+            </script>
+        </div>
+        <div>
+            <div id="app_object_02" :class="classObject">
+                <button @click="change">class改变</button>
+            </div>
+
+            <script>
+                new Vue({
+                    el: "#app_object_02",
+                    data: {
+                        classObject: {
+                            active: true,
+                            'text-danger': false,
+                        },
+                    },
+                    methods: {
+                        change: function() {
+                            this.classObject.active = !this.classObject.active;
+                            this.classObject['text-danger'] = !this.classObject['text-danger'];
+                        }
+                    }
+                })
+            </script>
+        </div>
+        <div>
+            <div id="app_object_03" :class="classObject">
+                <button @click="change">class改变</button>
+            </div>
+
+            <script>
+                new Vue({
+                    el: "#app_object_03",
+                    data: {
+                        isActive: true,
+                        hasError: false,
+                    },
+                    computed: {
+                        classObject: function() {
+                            return {
+                                active: this.isActive,
+                                'text-danger': this.hasError,
+                            }
+                        },
+                    },
+                    methods: {
+                        change: function() {
+                            this.isActive = !this.isActive;
+                            this.hasError = !this.hasError;
+                        }
+                    }
+                })
+            </script>
+        </div>
+    </div>
+    <div>
+        <h1>数组语法</h1>
+        <div>
+            <div id="app_array_01" :class="[activeClass, errorClass]">
+                <button @click="change">class改变</button>
+            </div>
+
+            <script>
+                new Vue({
+                    el: "#app_array_01",
+                    data: {
+                        activeClass: 'active1',
+                        errorClass: 'text-danger1'
+                    },
+                    methods: {
+                        change: function() {
+                            let m = this.activeClass;
+                            this.activeClass = this.errorClass;
+                            this.errorClass = m;
+                        }
+                    }
+                })
+            </script>
+        </div>
+        <div>
+            <div id="app_array_02" :class="[activeClass, hasError ? errorClass : '']">
+                <button @click="change">class改变</button>
+            </div>
+
+            <script>
+                new Vue({
+                    el: "#app_array_02",
+                    data: {
+                        activeClass: 'active1',
+                        errorClass: 'text-danger1',
+                        hasError: true,
+                    },
+                    methods: {
+                        change: function() {
+                            this.hasError = !this.hasError;
+                        }
+                    }
+                })
+            </script>
+        </div>
+        <div>
+            <div id="app_array_03" :class="[activeClass, {'text-danger1': hasError}]">
+                <button @click="change">class改变</button>
+            </div>
+
+            <script>
+                new Vue({
+                    el: "#app_array_03",
+                    data: {
+                        activeClass: 'active1',
+                        hasError: true,
+                    },
+                    methods: {
+                        change: function() {
+                            this.hasError = !this.hasError;
+                        }
+                    }
+                })
+            </script>
+        </div>
+    </div>
+    <div>
+        <h1>用在组件上</h1>
+        <div>
+            <div id="app_component_01">
+                <my-component class="baz boo"></my-component>
+            </div>
+            <script>
+                Vue.component('my-component', {
+                    template: '<p class="foo bar">Hi</p>'
+                })
+                new Vue({
+                    el: "#app_component_01"
+                })
+            </script>
+        </div>
+        <div>
+            <div id="app_component_02">
+                <my-component :class="{baz: isActive, boo: hasError}"></my-component>
+                <button @click="change">class改变</button>
+            </div>
+            <script>
+                Vue.component('my-component', {
+                    template: '<p class="foo bar">Hi</p>'
+                })
+                new Vue({
+                    el: "#app_component_02",
+                    data: {
+                        isActive: true,
+                        hasError: false,
+                    },
+                    methods: {
+                        change: function() {
+                            const date = new Date();
+                            switch (date % 4) {
+                                case 0:
+                                    this.isActive = false;
+                                    this.hasError = false;
+                                    break;
+                                case 1:
+                                    this.isActive = true;
+                                    this.hasError = false;
+                                    break;
+                                case 2:
+                                    this.isActive = false;
+                                    this.hasError = true;
+                                    break;
+                                case 3:
+                                    this.isActive = true;
+                                    this.hasError = true;
+                                    break;
+                            }
+                        }
+                    }
+                })
+            </script>
+        </div>
+    </div>
+</body>
+
+</html>

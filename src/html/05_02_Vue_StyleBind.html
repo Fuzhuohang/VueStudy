@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Vue.js2.0——内联样式绑定</title>
+    <!-- 开发版本引入 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- 生产版本引入 -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script> -->
+</head>
+
+<body>
+    <div>
+        <h1>对象语法</h1>
+        <div>
+            <div id="app_object_01" :style="{ width: width+'px', height: height+'px', margin: margin+'px', border: border, backgroundColor: backgroundColor }"></div>
+
+            <script>
+                new Vue({
+                    el: "#app_object_01",
+                    data: {
+                        width: 200,
+                        height: 150,
+                        margin: 5,
+                        border: '5px double blue',
+                        backgroundColor: 'gray',
+                    }
+                })
+            </script>
+        </div>
+        <div>
+            <div id="app_object_02" :style="styleObject"></div>
+
+            <script>
+                new Vue({
+                    el: "#app_object_02",
+                    data: {
+                        styleObject: {
+                            width: '200px',
+                            height: '150px',
+                            margin: '5px',
+                            border: '5px double blue',
+                            'background-color': 'gray',
+                        }
+                    }
+                })
+            </script>
+        </div>
+        <div>
+            <div id="app_object_03" :style="styleObject"></div>
+
+            <script>
+                new Vue({
+                    el: "#app_object_03",
+                    data: {
+                        width: 200,
+                        height: 150,
+                        margin: 5,
+                        border: '5px double blue',
+                        backgroundColor: 'gray',
+                    },
+                    computed: {
+                        styleObject: function() {
+                            return {
+                                width: this.width + 'px',
+                                height: this.height + 'px',
+                                margin: this.margin + 'px',
+                                border: this.border,
+                                'background-color': this.backgroundColor,
+                            }
+                        }
+                    }
+                })
+            </script>
+        </div>
+    </div>
+    <div>
+        <h1>数组语法</h1>
+        <div>
+            <div id="app_array_01" :style="[baseStyles, overridingStyles]">这是一个div</div>
+
+            <script>
+                new Vue({
+                    el: '#app_array_01',
+                    data: {
+                        baseStyles: {
+                            width: '200px',
+                            height: '150px',
+                            margin: '5px',
+                            border: '5px double blue',
+                            'background-color': 'gray',
+                            color: 'blue',
+                            fontSize: '30px',
+                        },
+                        overridingStyles: {
+                            width: '150px',
+                            height: '200px',
+                            margin: '5px',
+                            border: '5px double red',
+                            'background-color': 'yellowgreen',
+                            fontWeight: 'bold',
+                        }
+                    }
+                })
+            </script>
+        </div>
+    </div>
+</body>
+
+</html>
