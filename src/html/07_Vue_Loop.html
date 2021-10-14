@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Vue.js2.0——列表渲染</title>
+    <!-- 开发版本引入 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- 生产版本引入 -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script> -->
+</head>
+
+<body>
+    <div>
+        <h1>将数组映射为一组元素</h1>
+        <div>
+            <ol id="app_array_01">
+                <li v-for="item in items" :key="item.message">
+                    {{ item.message }}
+                </li>
+            </ol>
+
+            <script>
+                new Vue({
+                    el: '#app_array_01',
+                    data: {
+                        items: [{
+                            message: 'Foo'
+                        }, {
+                            message: 'Bar'
+                        }, ]
+                    }
+                })
+            </script>
+        </div>
+
+        <div>
+            <ol id="app_array_02">
+                <li v-for="(item, index) in items" :key="item.message">
+                    {{ item.message }} - {{ index }}
+                </li>
+            </ol>
+
+            <script>
+                new Vue({
+                    el: '#app_array_02',
+                    data: {
+                        items: [{
+                            message: 'Foo'
+                        }, {
+                            message: 'Bar'
+                        }, ]
+                    }
+                })
+            </script>
+        </div>
+        <div>
+            <ol id="app_array_03">
+                <li v-for="(item, index) of items" :key="item.message">
+                    {{ item.message }} - {{ index }}
+                </li>
+            </ol>
+
+            <script>
+                new Vue({
+                    el: '#app_array_03',
+                    data: {
+                        items: [{
+                            message: 'Foo'
+                        }, {
+                            message: 'Bar'
+                        }, ]
+                    }
+                })
+            </script>
+        </div>
+    </div>
+    <div>
+        <h1>将对象映射为一组元素</h1>
+        <div>
+            <div>
+                <ul id="app_object_01">
+                    <li v-for="value in object">
+                        {{ value }}
+                    </li>
+                </ul>
+                <script>
+                    new Vue({
+                        el: '#app_object_01',
+                        data: {
+                            object: {
+                                title: 'How to do list in Vue',
+                                author: 'Jane Doe',
+                                publishedAt: '2016-04-10',
+                            }
+                        }
+                    })
+                </script>
+            </div>
+            <div>
+                <ul id="app_object_02">
+                    <li v-for="(value, name) in object">
+                        {{ name }}: {{ value }}
+                    </li>
+                </ul>
+                <script>
+                    new Vue({
+                        el: '#app_object_02',
+                        data: {
+                            object: {
+                                title: 'How to do list in Vue',
+                                author: 'Jane Doe',
+                                publishedAt: '2016-04-10',
+                            }
+                        }
+                    })
+                </script>
+            </div>
+            <div>
+                <ul id="app_object_03">
+                    <li v-for="(value, name, index) in object">
+                        {{ index }}. {{ name }}: {{ value }}
+                    </li>
+                </ul>
+                <script>
+                    new Vue({
+                        el: '#app_object_03',
+                        data: {
+                            object: {
+                                title: 'How to do list in Vue',
+                                author: 'Jane Doe',
+                                publishedAt: '2016-04-10',
+                            }
+                        }
+                    })
+                </script>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h1>数组变更</h1>
+        <div>
+            <div id="app_change_01">
+                <ul>
+                    <li v-for="(item, index) of array">
+                        {{ index }} - {{ item.message }}
+                    </li>
+                </ul>
+                <button @click="push">push</button>
+                <button @click="pop">pop</button>
+                <button @click="shift">shift</button>
+                <button @click="unshift">unshift</button>
+                <button @click="splice">splice</button>
+                <button @click="sort">sort</button>
+                <button @click="reverse">reverse</button>
+            </div>
+
+            <script>
+                new Vue({
+                    el: '#app_change_01',
+                    data: {
+                        array: [{
+                            message: 0
+                        }, {
+                            message: 1
+                        }, ]
+                    },
+                    methods: {
+                        push: function() {
+                            this.array.push({
+                                message: this.array.length
+                            });
+                        },
+                        pop: function() {
+                            this.array.pop();
+                        },
+                        shift: function() {
+                            this.array.shift();
+                        },
+                        unshift: function() {
+                            this.array.unshift({
+                                message: this.array.length
+                            });
+                        },
+                        splice: function() {
+                            this.array.splice(1, 0, {
+                                message: this.array.length
+                            });
+                        },
+                        sort: function() {
+                            this.array.sort(function(x, y) {
+                                if (x.message < y.message) {
+                                    return -1;
+                                } else if (x.message > y.message) {
+                                    return 1;
+                                }
+                            });
+                        },
+                        reverse: function() {
+                            this.array.reverse().join();
+                        }
+                    }
+                })
+            </script>
+        </div>
+    </div>
+    <div>
+        <h1>数组替换</h1>
+        <div>
+            <div id="app_replace_01">
+                <ul>
+                    <li v-for="(item, index) of array">
+                        {{ index }} - {{ item.message }}
+                    </li>
+                </ul>
+                <button @click="push">push</button>
+                <button @click="unshift">unshift</button>
+                <br>
+                <button @click="filter">filter</button>
+                <button @click="concat">concat</button>
+                <button @click="slice">slice</button>
+            </div>
+
+            <script>
+                new Vue({
+                    el: '#app_replace_01',
+                    data: {
+                        array: [{
+                            message: 0
+                        }, {
+                            message: 1
+                        }, ]
+                    },
+                    methods: {
+                        push: function() {
+                            this.array.push({
+                                message: this.array.length
+                            });
+                        },
+                        unshift: function() {
+                            this.array.unshift({
+                                message: this.array.length
+                            });
+                        },
+                        filter: function() {
+                            this.array = this.array.filter(function(x) {
+                                return x.message > 5;
+                            });
+                        },
+                        concat: function() {
+                            this.array = this.array.concat([{
+                                message: this.array.length
+                            }, {
+                                message: this.array.length + 1
+                            }]);
+                        },
+                        slice: function() {
+                            this.array = this.array.slice(1);
+                        },
+                    }
+                })
+            </script>
+        </div>
+    </div>
+    <div>
+        <h1>数组过滤/排序</h1>
+        <div>
+            <ul id="app_filter_01">
+                <li v-for="n in evenNumbers">{{ n }}</li>
+            </ul>
+
+            <script>
+                new Vue({
+                    el: '#app_filter_01',
+                    data: {
+                        numbers: [1, 2, 3, 4, 5]
+                    },
+                    computed: {
+                        evenNumbers: function() {
+                            return this.numbers.filter(function(number) {
+                                return number % 2 === 0;
+                            })
+                        }
+                    }
+                })
+            </script>
+        </div>
+        <div>
+            <div id="app_filter_02">
+                <ul v-for="set in sets">
+                    <li v-for="n in even(set)">{{ n }}</li>
+                </ul>
+            </div>
+
+            <script>
+                new Vue({
+                    el: '#app_filter_02',
+                    data: {
+                        sets: [
+                            [1, 2, 3, 4, 5],
+                            [6, 7, 8, 9, 10]
+                        ]
+                    },
+                    methods: {
+                        even: function(numbers) {
+                            return numbers.filter(function(number) {
+                                return number % 2 === 0
+                            })
+                        }
+                    }
+                })
+            </script>
+        </div>
+    </div>
+    <div>
+        <h1>数组范围</h1>
+        <div>
+            <div id="app_range_01">
+                <span v-for="n in 10">{{ n }}&nbsp;</span>
+            </div>
+            <script>
+                new Vue({
+                    el: '#app_range_01'
+                })
+            </script>
+        </div>
+    </div>
+    <div>
+        <h1>模板上的v-for</h1>
+        <div>
+            <ul id="app_template_01">
+                <template v-for="item in items">
+                    <li>{{ item.msg }}</li>
+                    <li class="divider" role="presentation">{{ item.num }}</li>
+                </template>
+            </ul>
+
+            <script>
+                new Vue({
+                    el: '#app_template_01',
+                    data: {
+                        items: [{
+                            msg: 'a',
+                            num: 1,
+                        }, {
+                            msg: 'b',
+                            num: 2,
+                        }]
+                    }
+                })
+            </script>
+        </div>
+    </div>
+    <div>
+        <h1>组件</h1>
+        <div>
+            <div id="todo-list-example">
+                <form v-on:submit.prevent="addNewTodo">
+                    <label for="new-todo">Add a todo</label>
+                    <input v-model="newTodoText" id="new-todo" placeholder="E.g. Feed the cat">
+                    <button>Add</button>
+                </form>
+                <ul>
+                    <li is="todo-item" v-for="(todo, index) in todos" v-bind:key="todo.id" v-bind:title="todo.title" v-on:remove="todos.splice(index, 1)"></li>
+                </ul>
+            </div>
+            <script>
+                Vue.component('todo-item', {
+                    template: '\
+                                <li>\
+                                {{ title }}\
+                                <button v-on:click="$emit(\'remove\')">Remove</button>\
+                                </li>\
+                            ',
+                    props: ['title']
+                })
+
+                new Vue({
+                    el: '#todo-list-example',
+                    data: {
+                        newTodoText: '',
+                        todos: [{
+                            id: 1,
+                            title: 'Do the dishes',
+                        }, {
+                            id: 2,
+                            title: 'Take out the trash',
+                        }, {
+                            id: 3,
+                            title: 'Mow the lawn'
+                        }],
+                        nextTodoId: 4
+                    },
+                    methods: {
+                        addNewTodo: function() {
+                            this.todos.push({
+                                id: this.nextTodoId++,
+                                title: this.newTodoText
+                            })
+                            this.newTodoText = ''
+                        }
+                    }
+                })
+            </script>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Vue.js2.0——条件渲染</title>
+    <!-- 开发版本引入 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- 生产版本引入 -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script> -->
+</head>
+
+<body>
+    <div>
+        <h1>v-if</h1>
+        <div>
+            <div id="app_if_01">
+                <h4 v-if="ok">Vue is awesome!</h4>
+                <button @click="changeOk">Change "OK"</button>
+            </div>
+
+            <script>
+                new Vue({
+                    el: '#app_if_01',
+                    data: {
+                        ok: true,
+                    },
+                    methods: {
+                        changeOk: function() {
+                            this.ok = !this.ok;
+                        }
+                    }
+                })
+            </script>
+        </div>
+        <div>
+            <div id="app_if_02">
+                <h4 v-if="ok">Vue is awesome!</h4>
+                <h4 v-else>Oh no `(*&gt;﹏&lt;*)′!!!</h4>
+                <button @click="changeOk">Change "OK"</button>
+            </div>
+
+            <script>
+                new Vue({
+                    el: '#app_if_02',
+                    data: {
+                        ok: true,
+                    },
+                    methods: {
+                        changeOk: function() {
+                            this.ok = !this.ok;
+                        }
+                    }
+                })
+            </script>
+        </div>
+        <div>
+            <div id="app_if_03">
+                <template v-if="ok">
+                    <h4>Title 1</h4>
+                    <p>Paragraph 1</p>
+                    <p>Paragraph 2</p>
+                </template>
+                <template v-else>
+                    <h4>Title 2</h4>
+                    <p>Paragraph 3</p>
+                    <p>Paragraph 4</p>
+                </template>
+                <button @click="changeOk">Change "OK"</button>
+            </div>
+
+            <script>
+                new Vue({
+                    el: '#app_if_03',
+                    data: {
+                        ok: true,
+                    },
+                    methods: {
+                        changeOk: function() {
+                            this.ok = !this.ok;
+                        }
+                    }
+                })
+            </script>
+        </div>
+        <div>
+            <div id="app_if_04">
+                <div v-if="type === 'A'">
+                    A
+                </div>
+                <div v-else-if="type === 'B'">
+                    B
+                </div>
+                <div v-else-if="type === 'C'">
+                    C
+                </div>
+                <div v-else>
+                    Not A/B/C
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp; type: {{ type }}</span>
+                </div>
+                <button @click="changeType">Change "type"</button>
+            </div>
+
+            <script>
+                new Vue({
+                    el: '#app_if_04',
+                    data: {
+                        type: 'A',
+                    },
+                    methods: {
+                        changeType: function() {
+                            const n = 10000 * Math.random();
+                            this.type = String.fromCharCode("A".charCodeAt() + n % 26);
+                        }
+                    }
+                })
+            </script>
+        </div>
+    </div>
+</body>
+
+</html>

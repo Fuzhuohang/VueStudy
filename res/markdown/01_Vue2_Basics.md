@@ -526,22 +526,233 @@ new Vue({
 
 # 6 条件渲染
 ## 6.1 `v-if`
-### 6.1.1 在 `<template>` 元素上使用 `v-if` 条件渲染分组
+* `v-if` 指令会在指令表达式返回真值时渲染添加了当前指令的元素内容。
+```html
+<h1 v-if="swesome">Vue is awesome!</h1>
+```
 
+### 6.1.1 在 `<template>` 元素上使用 `v-if` 条件渲染分组
+* `v-if` 指令作用与单个元素上，如果需要切换多个元素，可以将一个 `<template>` 元素当作不可见的包裹元素，并使用 `v-if` 指令，最终渲染的结果不会包含 `<template>` 元素。
+```html
+<temlpate v-if="ok">
+    <h1>Title</h1>
+    <p>Paragraph 1</p>
+    <p>Paragraph 2</p>
+</temlpate>
+```
 
 ### 6.1.2 `v-else`
-
+* `v-else` 元素必须紧跟在带 `v-if` 或者 `v-else-if` 的元素的后面，否则它将不会被识别。
+```html
+<h1 v-if="swesome">Vue is awesome!</h1>
+<h1 v-else>Oh no `(*>﹏<*)′!!!</h1>
+```
 
 ### 6.1.3 `v-else-if`
-
+* Vue.js 2.1.0 新增了 `v-else-if` 指令，类似于 if 语句和 else if 语句的关系，`v-else-if` 指令也就是 `v-if` 语句的 “else if” 块。
+* 类似于 `v-else`，`v-else-if` 也必须紧跟在带 `v-if` 或者 `v-else-if` 的元素之后。
+```html
+<div v-if="type === 'A'">
+  A
+</div>
+<div v-else-if="type === 'B'">
+  B
+</div>
+<div v-else-if="type === 'C'">
+  C
+</div>
+<div v-else>
+  Not A/B/C
+</div>
+```
 
 ### 6.1.4 用 `key` 管理可复用的元素
-
+* Vue 会尽可能高效地渲染元素，通常会复用已有元素而不是从头开始渲染。
+* 这样也不总是符合实际需求，所以 Vue 为你提供了一种方式来表达“这两个元素是完全独立的，不要复用它们”。只需添加一个具有唯一值的 `key` 属性。
 
 ## 6.2 `v-show`
-
+* 另一个用于根据条件展示元素的选项是 `v-show` 指令。
+* 不同的是带有 `v-show` 的元素始终会被渲染并保留在 DOM 中。`v-show` 只是简单地切换元素的 CSS 属性 `display`。
+* 同时，`v-show` 不支持 `<template>` 元素。
+```html
+<h1 v-show="ok">Hello!</h1>
+```
 
 ## 6.3 `v-if` 和 `v-show` 的区别
-
+* `v-if` 是 “真正” 的条件渲染，因为它会确保在切换过程中条件块内的事件监听器和子组件适当地被销毁和重建。
+* `v-if` 也是**惰性**的：如果在初始渲染时条件为假，则什么也不做——直到条件第一次变为真时，才会开始渲染条件块。
+* 相比之下，`v-show` 就简单得多——不管初始条件是什么，元素总是会被渲染，并且只是简单地基于 CSS 进行切换。
+* 一般来说，`v-if` 有更高的切换开销，而 `v-show` 有更高的初始渲染开销。因此，如果需要非常频繁地切换，则使用 `v-show` 较好；如果在运行时条件很少改变，则使用 `v-if` 较好。
 
 ## 6.4 同时使用 `v-if` 和 `v-for`
+* 当 `v-if` 与 `v-for` 一起使用时，`v-for` 具有比 `v-if` 更高的优先级。
+* 具体细节将在 7.8 节中叙述。
+* ***ps：不推荐同时使用 `v-if` 和 `v-for` 指令。***  
+  
+# 7 列表渲染
+## 7.1 用 `v-for` 把一个数组对应为一组元素
+* `v-for` 指令可以基于一个数组来渲染一个列表。
+* `v-for` 指令需要使用 `item in items` 形式的特殊语法，其中 `items` 是源数据数组，而 `item` 则是被迭代的数组元素的**别名**。
+* 在 `v-for` 块中，我们可以访问所有父作用域的属性。
+* `v-for` 还支持一个可选的第二个参数，即当前项的索引。
+```html
+<ul id="example-2">
+  <li v-for="(item, index) in items">
+    {{ parentMessage }} - {{ index }} - {{ item.message }}
+  </li>
+</ul>
+```
+```javascript
+var example2 = new Vue({
+  el: '#example-2',
+  data: {
+    parentMessage: 'Parent',
+    items: [
+      { message: 'Foo' },
+      { message: 'Bar' }
+    ]
+  }
+})
+```
+* 另外，也可以用 `of` 替代 `in` 作为分隔符。
+```html
+<div v-for="item of items"></div>
+```
+
+## 7.2 在 `v-for` 里使用对象
+* `v-for` 指令也可以被用来遍历一个对象的属性。
+* 同样，在遍历对象的时候，也支持提供第二个参数，即属性名（键名），还可以使用第三个参数作为索引。
+```html
+<div v-for="(value, name, index) in object">
+  {{ index }}. {{ name }}: {{ value }}
+</div>
+```
+```javascript
+new Vue({
+  el: '#v-for-object',
+  data: {
+    object: {
+      title: 'How to do lists in Vue',
+      author: 'Jane Doe',
+      publishedAt: '2016-04-10'
+    }
+  }
+})
+```
+* ***ps: 在遍历对象时，会按 `Object.keys()` 的结果遍历，但是不能保证它的结果在不同的 JavaScript 引擎下都一致。***
+
+## 7.3 维护状态
+* 当 Vue 正在更新使用 `v-for` 渲染的元素列表时，它默认使用“就地更新”的策略。即：如果数据项的顺序被改变，Vue 将不会移动 DOM 元素来匹配数据项的顺序，而是就地更新每个元素，并且确保它们在每个索引位置正确渲染。
+* 这个默认的模式是高效的，但是**只适用于不依赖子组件状态或临时 DOM 状态 (例如：表单输入值) 的列表渲染输出**。
+* 为了给 Vue 一个提示，以便它能跟踪每个节点的身份，从而重用和重新排序现有元素，我们需要为每项提供一个唯一 `key` 属性。
+* *ps:不要使用对象或数组之类的非基本类型值作为 `v-for` 的 key。请用字符串或数值类型的值。*
+
+## 7.4 数组更新检测
+### 7.4.1 变更方法
+* Vue 将被侦听的数组的变更方法进行了包裹，所以它们也将会触发视图更新。
+* 这些方法包括：`push()`、`pop()`、`shift()`、`unshift()`、`splice()`、`sort()`、`reverse()`。
+
+### 7.4.2 替换数组
+* 对于数组操作，除了变更方法，还有一些非变更方法，它们执行时不会变更原始数组，而是**返回一个新数组**。
+* 常见的非变更方法有：`filter()`、`concat()`、`slice()`。
+
+### 7.4.3 注意事项
+* 由于 JavaScript 的限制，Vue 不能检测数组和对象的变化。
+
+## 7.5 显示过滤/排序后的结果
+* 有时，我们想要显示一个数组经过过滤或排序后的版本，而不实际变更或重置原始数据。在这种情况下，可以创建一个计算属性，来返回过滤或排序后的数组。
+```html
+<li v-for="n in evenNumbers">{{ n }}</li>
+```
+```javascript
+data: {
+  numbers: [ 1, 2, 3, 4, 5 ]
+},
+computed: {
+  evenNumbers: function () {
+    return this.numbers.filter(function (number) {
+      return number % 2 === 0
+    })
+  }
+}
+```
+* 在计算属性不适用的情况下 (例如，在嵌套 `v-for` 循环中) 可以使用一个方法来实现过滤。
+```html
+<ul v-for="set in sets">
+  <li v-for="n in even(set)">{{ n }}</li>
+</ul>
+```
+```javascript
+data: {
+  sets: [[ 1, 2, 3, 4, 5 ], [6, 7, 8, 9, 10]]
+},
+methods: {
+  even: function (numbers) {
+    return numbers.filter(function (number) {
+      return number % 2 === 0
+    })
+  }
+}
+```
+
+## 7.6 在 `v-for` 里使用值范围
+* `v-for` 也可以接受整数。在这种情况下，它会把模板重复对应次数。
+
+## 7.7 在 `<template>` 上使用 `v-for`
+* 类似于 `v-if`，你也可以利用带有 `v-for` 的 `<template>` 来循环渲染一段包含多个元素的内容。
+```html
+<ul>
+  <template v-for="item in items">
+    <li>{{ item.msg }}</li>
+    <li class="divider" role="presentation"></li>
+  </template>
+</ul>
+```
+
+## 7.8 `v-for` 和 `v-if` 同时使用
+* ***ps：不推荐在同一元素上使用 `v-if` 和 `v-for`。***
+* 当它们处于同一节点，`v-for` 的优先级比 `v-if` 更高，这意味着 `v-if` 将分别重复运行于每个 `v-for` 循环中。
+```html
+<li v-for="todo in todos" v-if="!todo.isComplete">
+  {{ todo }}
+</li>
+```
+* 而如果你的目的是有条件地跳过循环的执行，那么可以将 `v-if` 置于外层元素 (或 `<template>`) 上。
+```html
+<ul v-if="todos.length">
+  <li v-for="todo in todos">
+    {{ todo }}
+  </li>
+</ul>
+<p v-else>No todos left!</p>
+```
+
+## 7.9 在组件上使用 `v-for`
+* 在组件上使用 `v-for` 指令时，key 属性是必须的。
+* 同时，由于组件有自己独立的作用域，我们定义的外部数据并不会自动传递到组件当中，因此，我们需要使用 prop 参数组来将迭代数据传递到组件当中。
+* 不自动将 `item` 注入到组件里的原因是，这会使得组件与 `v-for` 的运作紧密耦合。明确组件数据的来源能够使组件在其他场合重复使用。
+
+# 8 事件处理
+## 8.1 监听事件
+
+
+## 8.2 事件处理方法
+
+
+## 8.3 内联处理器中的方法
+
+
+## 8.4 事件修饰符
+
+
+## 8.5 按键修饰符
+### 8.5.1 按键码
+
+
+## 8.6 系统修饰符
+### 8.6.1 .exact 修饰符
+
+
+### 8.6.2 鼠标按钮修饰符
+
+
