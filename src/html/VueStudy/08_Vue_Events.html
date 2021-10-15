@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Vue.js2.0——事件监听</title>
+    <!-- 开发版本引入 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- 生产版本引入 -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script> -->
+</head>
+
+<body>
+    <div>
+        <h1>普通监听</h1>
+        <div>
+            <div id="app_event_01">
+                <button @click="counter += 1">点击按钮</button>
+                <p>按钮被点击了 {{ counter }} 次。</p>
+            </div>
+            <script>
+                new Vue({
+                    el: '#app_event_01',
+                    data: {
+                        counter: 0
+                    }
+                })
+            </script>
+        </div>
+        <div>
+            <div id="app_event_02">
+                <button @click="Counter">点击按钮</button>
+                <p>按钮被点击了 {{ counter }} 次。</p>
+            </div>
+            <script>
+                const example2 = new Vue({
+                    el: '#app_event_02',
+                    data: {
+                        counter: 0
+                    },
+                    methods: {
+                        Counter: function() {
+                            this.counter += 1;
+                        }
+                    }
+                })
+            </script>
+        </div>
+        <div>
+            <div id="app_event_03">
+                <button @click="Counter(result)">点击按钮</button>
+                <p>2的 {{ counter }} 次幂的值是 {{ result }}。</p>
+            </div>
+            <script>
+                const example3 = new Vue({
+                    el: '#app_event_03',
+                    data: {
+                        counter: 0,
+                        result: 1
+                    },
+                    methods: {
+                        Counter: function(n) {
+                            this.counter += 1;
+                            this.result += n;
+                        }
+                    }
+                })
+            </script>
+        </div>
+        <div>
+            <div id="app_event_04">
+                <button v-on:click="warn('Form cannot be submitted yet.', $event)">
+                    Submit
+                </button>
+            </div>
+            <script>
+                new Vue({
+                    el: '#app_event_04',
+                    data: {
+
+                    },
+                    methods: {
+                        warn: function(message, event) {
+                            // 现在我们可以访问原生事件对象
+                            if (event) {
+                                event.preventDefault()
+                            }
+                            alert(message)
+                        }
+                    }
+                })
+            </script>
+        </div>
+    </div>
+    <div>
+        <h1>按键修饰符</h1>
+        <div>
+            <div>
+                <div id="app_keyboard_01">
+                    <button @click="Counter">点击按钮</button>
+                    <button @click="Clear">清空数据</button>
+                    <p>按钮被点击了 {{ counter }} 次，其中键盘输入{{ knock }} 次。</p>
+                    <input type="text" :value="counter + ' --- ' + knock" @keyup.enter="Knock" @keyup.delete="Clear">
+                </div>
+                <script>
+                    const keyboard1 = new Vue({
+                        el: '#app_keyboard_01',
+                        data: {
+                            counter: 0,
+                            knock: 0
+                        },
+                        methods: {
+                            Counter: function() {
+                                this.counter += 1;
+                            },
+                            Knock: function() {
+                                this.knock += 1;
+                                this.counter += 1;
+                            },
+                            Clear: function() {
+                                this.counter = 0;
+                                this.knock = 0;
+                            }
+                        }
+                    })
+                </script>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h1>系统修饰键</h1>
+        <div>
+            <div>
+                <div id="app_system_01">
+                    <button @click.ctrl.exact="Counter">点击按钮</button>
+                    <button @click.ctrl.shift="Clear">清空数据</button>
+                    <p>按钮被点击了 {{ counter }} 次，其中键盘输入{{ knock }} 次。</p>
+                    <input type="text" :value="counter + ' --- ' + knock" @keyup.enter="Knock" @keyup.delete="Clear">
+                </div>
+                <script>
+                    const system1 = new Vue({
+                        el: '#app_system_01',
+                        data: {
+                            counter: 0,
+                            knock: 0
+                        },
+                        methods: {
+                            Counter: function() {
+                                this.counter += 1;
+                            },
+                            Knock: function() {
+                                this.knock += 1;
+                                this.counter += 1;
+                            },
+                            Clear: function() {
+                                this.counter = 0;
+                                this.knock = 0;
+                            }
+                        }
+                    })
+                </script>
+            </div>
+            <div>
+                <h2>鼠标修饰符</h2>
+                <div id="app_system_02">
+                    <button @click.left="Counter">点击按钮</button>
+                    <button @click.middle="Clear">清空数据</button>
+                    <p>按钮被点击了 {{ counter }} 次，其中键盘输入{{ knock }} 次。</p>
+                    <input type="text" :value="counter + ' --- ' + knock" @keyup.enter="Knock" @keyup.delete="Clear">
+                </div>
+                <script>
+                    const system2 = new Vue({
+                        el: '#app_system_02',
+                        data: {
+                            counter: 0,
+                            knock: 0
+                        },
+                        methods: {
+                            Counter: function() {
+                                this.counter += 1;
+                            },
+                            Knock: function() {
+                                this.knock += 1;
+                                this.counter += 1;
+                            },
+                            Clear: function() {
+                                this.counter = 0;
+                                this.knock = 0;
+                            }
+                        }
+                    })
+                </script>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>test20211015</title>
+    <!-- 开发版本引入 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- 生产版本引入 -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script> -->
+    <style>
+        .label {
+            display: inline-block;
+        }
+        
+        .input {
+            display: inline-block;
+            position: relative;
+        }
+        
+        .value {
+            border: 1px solid black;
+            width: 500px;
+        }
+        
+        .select {
+            position: absolute;
+            border: 1px solid gray;
+        }
+        
+        .items {
+            display: inline-block;
+        }
+        
+        .items {
+            padding-left: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <a-cascading></a-cascading>
+    </div>
+
+    <template id="cascading">
+        <div>
+            <div class="label">级联选择框：</div>
+            <div class="input">
+                <div class="value">{{ value }}</div>
+                <div class="select">
+                    <div class="items">
+                        <div class="item">b</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        const tem = document.getElementById("cascading");
+        console.log(tem.innerHTML);
+        Vue.component('a-cascading', {
+            data: function() {
+                return {
+
+                }
+            },
+            template: tem.innerHTML,
+        })
+        new Vue({
+            el: '#app',
+            data: {
+                selectedItem: [options],
+                options: {
+                    '1': {
+                        '1-1': ['1-1-1'],
+                        '1-2': ['1-2-1', '1-2-2'],
+                    },
+                    '2': {
+                        '2-1': ['2-1-1', '2-1-2', '2-1-3'],
+                        '2-2': ['2-2-1', '2-2-2'],
+                    },
+                },
+                computed: {
+                    value: function() {
+                        let v = "";
+                        for (let i = 1; i < this.selectedItem.lenght(); i++) {
+                            v += selectedItem[i];
+                        }
+                        return v;
+                    }
+                }
+
+            }
+
+        })
+    </script>
+</body>
+
+</html>
